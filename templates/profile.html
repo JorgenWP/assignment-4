@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+
+    <h1>Update Your Profile</h1>
+
+    {% if result != None %}
+        <div style="margin-bottom: 12px; padding: 7px; background-color: lightgray">
+            {% if result.ok %}
+                Profile stored!
+            {% else %}
+                <div>{{result.text}}</div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+        <form method="post">
+            <label for="title">User ID </label><br>
+          <input type="text" name="id"
+               value="{{user.id}}"/>
+        <br>
+
+        <!--<label for="title">Display Name</label><br>
+        <input type="text" name="displayName"
+               value="{{user.displayName}}"/>
+        <br>
+
+        <label for="title">Given Name</label><br>
+        <input type="text" name="givenName"
+               value="{{user.givenName}}" />
+        <br>
+
+        <label for="title">Surname</label><br>
+        <input type="text" name="surname"
+               value="{{user.surname}}" />
+        <br>-->
+
+        <label for="title">Phonenr</label><br>
+        <input type="text" name="mobilePhone"
+               value="{{user.mobilePhone}}" />
+        <br>
+
+        <label for="title">Business Phonenr</label><br>
+        <input type="list" name="businessPhones"
+               value="{{user.businessPhones[0]}}" />
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+<div style="padding-top: 2rem">
+<a href="/">back</a>
+</div>
+
+<!-- Print json -->
+<!-- pre> {{ user |tojson(indent=4) }}</pre-->
+
+</body>
+</html>

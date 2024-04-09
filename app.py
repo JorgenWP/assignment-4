@@ -73,7 +73,6 @@ def index():
     # TODO: use the auth object to get the profile of the logged in user.
     user = auth.get_user()
     if not user:
-        flash("You must be logged in to view that page.", "error")
         return redirect(url_for("login"))
     
     return render_template('index.html', user=user)

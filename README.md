@@ -3,7 +3,7 @@ This is a simple flask app that demonstrates how to use OpenID authentication. T
 
 ## How to run
 It is possible to both run the app directly using python or using docker. But first, you will need to set up the environment variables. To do this, you can create a `.env` file in the root of the project and add the following variables:
-```python
+```env
 CLIENT_ID=<>        # Create an app registration in the Azure portal
 CLIENT_SECRET=<>    # Create a secret in the Azure portal
 AUTHORITY=https://login.microsoftonline.com/<Directory (tenant) ID> # From the Azure portal

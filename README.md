@@ -2,7 +2,17 @@
 This is a simple flask app that demonstrates how to use OpenID authentication. The app also demonstrates how to deploy it using docker and how to make use of certificates to enable HTTPS encryption.
 
 ## How to run
-It is possible to both run the app directly using python or using docker. 
+It is possible to both run the app directly using python or using docker. But first, you will need to set up the environment variables. To do this, you can create a `.env` file in the root of the project and add the following variables:
+```python
+CLIENT_ID=<>        # Create an app registration in the Azure portal
+CLIENT_SECRET=<>    # Create a secret in the Azure portal
+AUTHORITY=https://login.microsoftonline.com/<Directory (tenant) ID> # From the Azure portal
+
+SESSION_SECRET=<> # This can be any random string
+
+SCOPES=User.Read User.ReadWrite User.ReadBasic.All
+REDIRECT_URI=http://localhost:5000/getAToken
+```
 
 ### Running the app using python
 
@@ -30,7 +40,7 @@ It is possible to both run the app directly using python or using docker.
     ```
 
 2. Run the docker container
-    > **Note:** This approach will result in an error due to the [dockerfile](dockerfile) configuration. The error is due to the fact that the app is trying to use HTTPS and the certificates are not present in the container. To fix this, you can either remove the HTTPS configuration from the dockerfile or add the certificates before staring the container.
+    > **Note:** This approach will result in an error due to the [dockerfile](dockerfile) configuration. The error is due to the fact that the app is trying to use HTTPS and the certificates are not present in the container. To fix this, you can either [remove the HTTPS configuration](#removing-the-https-configuration-from-the-dockerfile) from the dockerfile or [add the certificates](#certificates) before staring the container.
     ```bash
     docker run -p 5000:80 <docker-image-name>
     ```
@@ -45,3 +55,9 @@ Into this:
 ```dockerfile
 CMD ["flask", "run", "--port", "80"]
 ```
+
+## Certificates
+The certificates used in this project are delivered by [Let's Encrypt](https://letsencrypt.org/). The certificates are used to enable HTTPS encryption in the app and are automaticaly renewd. The certificates are not included in the repository, so you will need to generate your own certificates. To generate the certificates, you can use the [certbot](https://certbot.eff.org/) tool.
+
+### Setting up certbot
+To set up certbot using docker on a machine running ubuntu 20 or later, you can follow the instructions on [this page](https://certbot.eff.org/instructions?ws=other&os=ubuntufocal&tab=standard). 

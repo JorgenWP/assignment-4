@@ -1,6 +1,16 @@
 # OpenID Authentication
 This is a simple flask app that demonstrates how to use OpenID authentication. The app also demonstrates how to deploy it using docker and how to make use of certificates to enable HTTPS encryption.
 
+## Table of Contents
+- [OpenID Authentication](#openid-authentication)
+  - [Table of Contents](#table-of-contents)
+  - [How to run](#how-to-run)
+    - [Running the app using python](#running-the-app-using-python)
+    - [Running the app using docker](#running-the-app-using-docker)
+      - [Removing the HTTPS configuration from the dockerfile](#removing-the-https-configuration-from-the-dockerfile)
+  - [Certificates](#certificates)
+    - [Setting up certbot](#setting-up-certbot)
+
 ## How to run
 It is possible to both run the app directly using python or using docker. But first, you will need to set up the environment variables. To do this, you can create a `.env` file in the root of the project and add the following variables:
 ```env

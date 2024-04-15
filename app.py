@@ -6,22 +6,15 @@ from flask_session import Session
 
 # The following variables are required for the app to run.
 
-# TODO: Use the Azure portal to register your application and generate client id and secret credentials.
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
-# TODO: Figure out your authentication authority id.
 AUTHORITY = os.getenv("AUTHORITY")
 
-# TODO: generate a secret. Used by flask session for protecting cookies.
 SESSION_SECRET = os.getenv("SESSION_SECRET")
 
-# TODO: Figure out what scopes you need to use
-# SCOPES = ["User.Read"]
 SCOPES = os.getenv("SCOPES", "").split()
 
-# TODO: Figure out the URO where Azure will redirect to after authentication. After deployment, this should
-#  be on your server. The URI must match one you have configured in your application registration.
 REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 REDIRECT_PATH = "/getAToken"
@@ -42,7 +35,6 @@ auth = identity.web.Auth(session=session,
 
 @app.route("/login")
 def login():
-    # TODO: Use the auth object to log in.
     response = auth.log_in(
         scopes=SCOPES,
         redirect_uri=url_for("auth_response", _external=True),
@@ -54,7 +46,6 @@ def login():
 
 @app.route(REDIRECT_PATH)
 def auth_response():
-    # TODO: Use the flask request object and auth object to complete the authentication.
     result = auth.complete_log_in(request.args)
     if "error" in result:
         return render_template("auth_error.html", result=result)
@@ -64,13 +55,11 @@ def auth_response():
 
 @app.route("/logout")
 def logout():
-    # TODO: Use the auth object to log out and redirect to the home page.
     return redirect(auth.log_out(url_for("index", _external=True)))
 
 
 @app.route("/")
 def index():
-    # TODO: use the auth object to get the profile of the logged in user.
     user = auth.get_user()
     if not user:
         return redirect(url_for("login"))
@@ -81,7 +70,6 @@ def index():
 @app.route("/profile", methods=["GET"])
 def get_profile():
 
-    # TODO: Check that the user is loggen in and add credentials to the http request.
     token = auth.get_token_for_user(SCOPES)
     if "error" in token:
         flash("You must be logged in to view that page.", "error")
@@ -97,7 +85,6 @@ def get_profile():
 @app.route("/profile", methods=["POST"])
 def post_profile():
 
-    # TODO: check that the user is logged in and add credentials to the http request.
     token = auth.get_token_for_user(SCOPES)
     if "error" in token:
         flash("You must be logged in to modify this content.", "error")
@@ -105,6 +92,7 @@ def post_profile():
     
     form_data = request.form.to_dict()
     
+    # The Microsoft Graph API expects businessPhones to be in an array.
     if 'businessPhones' in form_data:
         form_data['businessPhones'] = [form_data['businessPhones']]
         
@@ -114,7 +102,6 @@ def post_profile():
         headers={'Authorization': 'Bearer ' + token['access_token']}
     )
 
-    # TODO: add credentials to the http request.
     profile = requests.get(
         'https://graph.microsoft.com/v1.0/me',
         headers={'Authorization': 'Bearer ' + token['access_token']}
@@ -127,7 +114,6 @@ def post_profile():
 @app.route("/users")
 def get_users():
 
-    # TODO: Check that user is logged in and add credentials to the request.
     token = auth.get_token_for_user(SCOPES)
     if "error" in token:
         flash("You must be logged in to view that page.", "error")
